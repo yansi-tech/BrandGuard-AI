@@ -80,7 +80,9 @@ app.use((error, req, res, _next) => {
 });
 
 checkConnection()
-  .then(() => app.listen(port, () => console.log(`BrandGuard AI is running at http://localhost:${port}`)))
+  .then(() => app.listen(port, '0.0.0.0', () => {
+  console.log(`BrandGuard AI is running on port ${port}`);
+}))
   .catch((error) => {
     console.error('Unable to connect to MySQL. Set DB_* values in .env and run `npm run db:init`.');
     console.error(error.message);
