@@ -1,0 +1,21 @@
+<%- include('partials/top') %>
+<section class="page-heading dashboard-heading">
+  <div><p class="eyebrow">WORKSPACE OVERVIEW</p><h1>Good morning, team.</h1><p>Keep every customer-facing word unmistakably on brand.</p></div>
+  <a class="button primary" href="/review/new">+ Start a review</a>
+</section>
+<section class="stat-grid">
+  <article class="stat-card"><span class="stat-icon blue">⌁</span><div><p>Total reviews</p><strong><%= counts.total %></strong><small>All time</small></div></article>
+  <article class="stat-card"><span class="stat-icon green">✓</span><div><p>Approved content</p><strong><%= counts.approved %></strong><small>Human-approved</small></div></article>
+  <article class="stat-card"><span class="stat-icon amber">◷</span><div><p>Pending reviews</p><strong><%= counts.pending %></strong><small>Awaiting a reviewer</small></div></article>
+  <article class="stat-card"><span class="stat-icon red">!</span><div><p>Detected violations</p><strong><%= counts.violations %></strong><small>Across all reviews</small></div></article>
+</section>
+<section class="dashboard-grid">
+  <article class="panel activity-panel"><div class="panel-title"><div><h2>Recent review activity</h2><p>Your latest content checks</p></div><a href="/review/new">New review →</a></div>
+    <% if (recent.length) { %><div class="review-list"><% recent.forEach((item) => { %><a class="review-row" href="/review/<%= item.id %>"><span class="doc-icon">▤</span><span class="review-name"><strong><%= item.title %></strong><small><%= item.content_type %> · <%= new Date(item.created_at).toLocaleDateString() %></small></span><span class="score <%= item.score >= 80 ? 'score-good' : item.score >= 60 ? 'score-warn' : 'score-bad' %>"><%= item.score %></span><span class="status <%= item.status.toLowerCase().replace('_', '-') %>"><%= item.status.replace('_', ' ') %></span><span>›</span></a><% }) %></div><% } else { %><div class="empty-state"><span>⌁</span><h3>Nothing reviewed yet</h3><p>Run your first content check to start building a clear audit trail.</p><a class="button secondary" href="/review/new">Review sample content</a></div><% } %>
+  </article>
+  <article class="panel recurring-panel"><div class="panel-title"><div><h2>Recurring issues</h2><p>Patterns from your reviews</p></div></div>
+    <% if (recurring.length) { %><div class="issue-chart"><% recurring.forEach((item, index) => { const max = recurring[0].count || 1; %><div class="chart-row"><div><span class="chart-dot dot-<%= index %>"></span><%= item.category %></div><strong><%= item.count %></strong><span class="bar"><i style="width:<%= Math.max(16, item.count / max * 100) %>%"></i></span></div><% }) %></div><% } else { %><div class="empty-compact"><span>◈</span><p>Insights appear as your team completes reviews.</p></div><% } %>
+    <div class="trust-note"><span>✦</span><p><strong>Transparent by design</strong><br>Scores reflect flagged-issue severity, not a guarantee of compliance.</p></div>
+  </article>
+</section>
+<%- include('partials/bottom') %>

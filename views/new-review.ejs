@@ -1,0 +1,11 @@
+<%- include('partials/top') %>
+<section class="page-heading compact"><div><p class="eyebrow">CONTENT REVIEW</p><h1>Review content before it goes live.</h1><p>BrandGuard checks your approved rules and surfaces items for a human to decide.</p></div></section>
+<form id="review-form" class="review-editor panel">
+  <div class="editor-top"><div><label for="title">Review name</label><input id="title" name="title" maxlength="180" placeholder="e.g. Product launch announcement" required></div><div><label for="contentType">Content type</label><select id="contentType" name="contentType" required><% contentTypes.forEach((type) => { %><option value="<%= type %>"><%= type %></option><% }) %></select></div></div>
+  <label for="content">Content to review</label>
+  <textarea id="content" name="content" rows="17" maxlength="30000" required aria-describedby="content-help">Introducing our revolutionary AI-powered assistant. It guarantees faster decisions for every customer and is the best-in-class solution for content teams.</textarea>
+  <div class="editor-footer"><span id="content-help">Paste up to 30,000 characters. Only your backend can access Gemini.</span><span id="character-count">0 / 30,000</span></div>
+  <div class="editor-actions"><button type="button" id="load-sample" class="button ghost">Load sample</button><button class="button primary large" type="submit"><span class="button-text">Review content</span><span class="button-loader" hidden>Analysing…</span> →</button></div>
+</form>
+<section class="how-it-works"><div><span>1</span><strong>Check rules</strong><p>We compare against your saved terminology, facts and guidance.</p></div><div><span>2</span><strong>Surface evidence</strong><p>Every finding identifies the supporting rule or asks for human verification.</p></div><div><span>3</span><strong>Human approval</strong><p>A reviewer—not an AI—makes the final publishing decision.</p></div></section>
+<%- include('partials/bottom') %>
