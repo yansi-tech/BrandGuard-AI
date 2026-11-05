@@ -49,12 +49,37 @@ $$('[data-modal-open]').forEach((button) => button.addEventListener('click', () 
 $$('[data-modal-close]').forEach((button) => button.addEventListener('click', () => button.closest('.modal-backdrop').hidden = true));
 $$('.modal-backdrop').forEach((backdrop) => backdrop.addEventListener('click', (event) => { if (event.target === backdrop) backdrop.hidden = true; }));
 
+
 $('#rule-form')?.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
-  try { await api('/api/rules', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(event.currentTarget))) }); window.location.reload(); }
-  catch (error) { toast(error.message, true); button.disabled = false; }
+
+  const form = event.currentTarget;
+  const button = form.querySelector('button[type="submit"]');
+  const modal = form.closest('.modal-backdrop');
+
+  button.disabled = true;
+
+  try {
+    await api('/api/rules', {
+      method: 'POST',
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    });
+
+    toast('Brand rule saved successfully!');
+
+    form.reset();
+
+    if (modal) modal.hidden = true;
+
+    setTimeout(() => window.location.reload(), 700);
+
+  } catch (error) {
+    toast(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
 });
+
 $$('.delete-rule').forEach((button) => button.addEventListener('click', async () => {
   if (!confirm('Delete this saved brand rule?')) return;
   try { await api(`/api/rules/${button.dataset.ruleId}`, { method: 'DELETE' }); button.closest('.rule').remove(); toast('Rule deleted.'); }
